@@ -1,0 +1,57 @@
+version: '2'
+
+services:
+  jira:
+    image: blacklabelops/jira
+    container_name: jirasoftware
+    networks:
+      - jiranet
+    volumes:
+      - jiradata:/var/atlassian/jira
+    ports:
+      - '80:8080'
+    environment:
+      - 'JIRA_DATABASE_URL=oracle_data://jira@oracle-xe-11g/jiradb'
+      - 'JIRA_DB_PASSWORD=jellyfish'
+      - 'CATALINA_OPTS= -Xms256m -Xmx1g'
+      - 'JIRA_PROXY_NAME='
+      - 'JIRA_PROXY_PORT='
+      - 'JIRA_PROXY_SCHEME='
+      - 'DOCKER_WAIT_HOST=oracle-xe-11g'
+      - 'DOCKER_WAIT_PORT=5432'
+    links:
+      - 'oracle-xe-11g:oracle-xe-11g'
+    labels:
+      com.blacklabelops.description: "Atlassian Jira"
+      com.blacklabelops.service: "jira"
+
+  oracle-xe-11g:
+    image: alexeiled/docker-oracle-xe-11g
+    hostname: oracle-xe-11g
+    networks:
+      - jiranet
+    volumes:
+      - .oracle_data:/u01/app/oracle
+    environment:
+      - 'ORACLE_USER=jira'
+      # CHANGE THE PASSWORD!
+      - 'ORACLE_PASSWORD=jellyfish'
+      - 'ORACLE_DB=jiradb'
+      - 'ORACLE_ENCODING=UNICODE'
+      - 'ORACLE_HOME=/u01/app/oracle/product/11.2.0/xe'
+      - 'PATH=$ORACLE_HOME/bin:$PATH'
+      - 'ORACLE_SID=XE'
+      - 'ORACLE_ALLOW_REMOTE=true'
+    labels:
+      com.blacklabelops.description: "Oracle XE 11g Database Server"
+      com.blacklabelops.service: "oracle-xe-11g"
+
+volumes:
+  jiradata:
+    external: false
+  postgresqldata:
+    external: false
+
+networks:
+  jiranet:
+    driver: bridge
