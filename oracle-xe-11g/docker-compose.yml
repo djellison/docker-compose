@@ -34,7 +34,7 @@ services:
     networks:
       - jiranet
     volumes:
-      - .oracle_data:/u01/app/oracle
+      - oracle_data:/u01/app/oracle
     environment:
       - 'ORACLE_USER=jira'
       # CHANGE THE PASSWORD!
@@ -47,12 +47,12 @@ services:
       - 'ORACLE_ALLOW_REMOTE=true'
     labels:
       com.alexeiled.description: "Oracle XE 11g Database Server"
-      com.alexeiled.service: "oracle-xe-11g"
+      com.alexeiled.service: "oracle"
 
 volumes:
   jiradata:
     external: false
-  postgresqldata:
+  oracle_data:
     external: false
 
 networks:
