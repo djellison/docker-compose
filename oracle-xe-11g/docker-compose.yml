@@ -28,7 +28,6 @@ services:
   oracle:
     image: alexeiled/docker-oracle-xe-11g
     hostname: oracle-xe-11g
-    mem_min: 400m
     ports:
       - 1521:1521
       - 8999:8080
