@@ -11,7 +11,7 @@ services:
     ports:
       - '80:8080'
     environment:
-      - 'JIRA_DATABASE_URL=oracle_data://jira@oracle-xe-11g/jiradb'
+      - 'JIRA_DATABASE_URL=oracle://jira@oracle/jiradb'
       - 'JIRA_DB_PASSWORD=jellyfish'
       - 'CATALINA_OPTS= -Xms256m -Xmx1g'
       - 'JIRA_PROXY_NAME='
@@ -20,14 +20,18 @@ services:
       - 'DOCKER_WAIT_HOST=oracle-xe-11g'
       - 'DOCKER_WAIT_PORT=5432'
     links:
-      - 'oracle-xe-11g:oracle-xe-11g'
+      - 'oracle:oracle-xe-11g'
     labels:
       com.blacklabelops.description: "Atlassian Jira"
       com.blacklabelops.service: "jira"
 
-  oracle-xe-11g:
+  oracle:
     image: alexeiled/docker-oracle-xe-11g
     hostname: oracle-xe-11g
+    mem_min: 400m
+    ports:
+      - 1521:1521
+      - 8999:8080
     networks:
       - jiranet
     volumes:
@@ -43,8 +47,8 @@ services:
       - 'ORACLE_SID=XE'
       - 'ORACLE_ALLOW_REMOTE=true'
     labels:
-      com.blacklabelops.description: "Oracle XE 11g Database Server"
-      com.blacklabelops.service: "oracle-xe-11g"
+      com.alexeiled.description: "Oracle XE 11g Database Server"
+      com.alexeiled.service: "oracle-xe-11g"
 
 volumes:
   jiradata:
