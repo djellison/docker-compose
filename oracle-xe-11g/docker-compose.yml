@@ -18,7 +18,8 @@ services:
       - 'JIRA_PROXY_PORT='
       - 'JIRA_PROXY_SCHEME='
       - 'DOCKER_WAIT_HOST=oracle-xe-11g'
-      - 'DOCKER_WAIT_PORT=5432'
+      # - 'DOCKER_WAIT_PORT=5432'
+      - 'DOCKER_WAIT_PORT=1521'
     links:
       - 'oracle:oracle-xe-11g'
     labels:
